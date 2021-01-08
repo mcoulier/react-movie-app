@@ -1,21 +1,24 @@
 import React, {useState, useEffect} from "react";
 import SearchMovie from "./SearchMovie";
+import Movie from "./Movie";
 
 function MovieList(props) {
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [movies, setMovies] = useState([]);
     const [userSearchValue, setUserSearchValue] = useState("");
+    const [movieId, setMovieId] = useState();
 
     useEffect(() => {
-        fetch(`http://www.omdbapi.com/?s=${userSearchValue}&y=2020&apikey=64c042be`)
+        fetch(`http://www.omdbapi.com/?s=${userSearchValue}&apikey=64c042be`)
             .then(res => res.json())
             .then(
                 (result) => {
                     setIsLoaded(true);
-                    setMovies(result.Search);
                     if (result.Search) {
                         setMovies(result.Search)
+                        console.log(movieId);
+
                     }
                 },
                 (error) => {
@@ -33,11 +36,19 @@ function MovieList(props) {
         return (
             <div>
                 <SearchMovie setTerm={setUserSearchValue} value={userSearchValue}/>
+                {!movieId ?
                 <ul>
                     {movies && movies.map(movie => (
-                        <li key={movie.imdbID}><img src={movie.Poster} alt="movie poster"/>{movie.Title}<br/></li>
+                        //make onclick a function
+                        <li key={movie.imdbID}>
+                            <img onClick={() => {
+                                setMovieId(movie.imdbID);
+                            }} src={movie.Poster} alt="movie poster"/>{movie.Title}<br/>
+                        </li>
                     ))}
-                </ul>
+                </ul>:
+                <Movie movieId={movieId}/>
+                }
             </div>
         );
     }

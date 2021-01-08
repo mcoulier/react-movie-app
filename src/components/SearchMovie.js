@@ -1,4 +1,4 @@
-function SearchMovie(props) {
+const SearchMovie = (props) => {
     return (
         <div>
             <input value={props.value}
@@ -11,6 +11,5 @@ function SearchMovie(props) {
         </div>
     );
 }
-
 
 export default SearchMovie;
