@@ -1,4 +1,4 @@
-import {useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 
 const Movie = (props) => {
     const [movie, setMovie] = useState([]);
@@ -10,16 +10,15 @@ const Movie = (props) => {
                 (result) => {
                     if (result) {
                         setMovie(result);
-                        console.log(result);
                     }
                 }
             )
     }, [props.movieId]);
 
     return (
-        <div>
+        <div className="movieDetail">
             <h1>{movie.Title}</h1>
-            <img src={movie.Poster} alt="movie poster"/>
+            <img src={movie.Poster} alt="movie poster" />
             <ul>
                 <li>Genre: {movie.Genre}</li>
                 <li>Director: {movie.Director}</li>

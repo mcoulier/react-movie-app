@@ -1,24 +1,23 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
+import { GridList } from '@material-ui/core'
 import SearchMovie from "./SearchMovie";
 import Movie from "./Movie";
 
-function MovieList(props) {
+function MovieList() {
     const [error, setError] = useState(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [movies, setMovies] = useState([]);
-    const [userSearchValue, setUserSearchValue] = useState("");
+    const [searchValue, setSearchValue] = useState("");
     const [movieId, setMovieId] = useState();
 
     useEffect(() => {
-        fetch(`http://www.omdbapi.com/?s=${userSearchValue}&apikey=64c042be`)
+        fetch(`http://www.omdbapi.com/?s=${searchValue}&apikey=64c042be`)
             .then(res => res.json())
             .then(
                 (result) => {
                     setIsLoaded(true);
                     if (result.Search) {
                         setMovies(result.Search)
-                        console.log(movieId);
-
                     }
                 },
                 (error) => {
@@ -26,7 +25,7 @@ function MovieList(props) {
                     setError(error);
                 }
             )
-    }, [userSearchValue]);
+    }, [searchValue]);
 
     if (error) {
         return <div>Error: {error.message}</div>;
@@ -35,19 +34,19 @@ function MovieList(props) {
     } else {
         return (
             <div>
-                <SearchMovie setTerm={setUserSearchValue} value={userSearchValue}/>
-                {!movieId ?
-                <ul>
-                    {movies && movies.map(movie => (
-                        //make onclick a function
-                        <li key={movie.imdbID}>
-                            <img onClick={() => {
-                                setMovieId(movie.imdbID);
-                            }} src={movie.Poster} alt="movie poster"/>{movie.Title}<br/>
-                        </li>
-                    ))}
-                </ul>:
-                <Movie movieId={movieId}/>
+                <SearchMovie className="searchMovie" setTerm={setSearchValue} value={searchValue} />
+                {
+                    !movieId ?
+                        <GridList cellHeight={444} cellWidth={444} cols={2}>
+                            {movies && movies.map(movie => (
+                                <li key={movie.imdbID}>
+                                    <img className="imageList" onClick={() => {
+                                        setMovieId(movie.imdbID);
+                                    }} src={movie.Poster} alt="movie poster" />
+                                </li>
+                            ))}
+                        </GridList> :
+                        <Movie movieId={movieId} />
                 }
             </div>
         );

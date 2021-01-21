@@ -1,0 +1,16 @@
+body {
+    background: #E28413;
+}
+
+.imageList {
+    margin-bottom: 10px;
+}
+
+.textField {
+    position: fixed;
+}
+
+h1 {
+    font-size: 28px;
+    color: indigo;
+}
